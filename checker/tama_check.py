@@ -9,7 +9,7 @@ import csv
 from checker.notify.notify import rain_notify
 
 
-def oomori_checker():
+def tama_checker():
   options = ChromeOptions()
   options.add_argument("--headless")
 
@@ -37,7 +37,7 @@ def oomori_checker():
 
 
   grounds = driver.find_elements(By.CLASS_NAME, 'BTNLR')
-  driver.execute_script('arguments[0].click();', grounds[0])
+  driver.execute_script('arguments[0].click();', grounds[4])
   time.sleep(1)
   # HTMLを文字コードをUTF-8に変換してから取得します。
   html = driver.page_source.encode('utf-8')
@@ -49,7 +49,7 @@ def oomori_checker():
 
 
   rain_grounds = []  #コート不良になったグランド名
-  for i in range(7, 11):
+  for i in range(7, 38):
     #各球場のコンディション取得
     condition = conditions[i].find_all('td', class_='NATR')
     #各時間帯のコンディション取得
@@ -65,11 +65,11 @@ def oomori_checker():
       else:
         write_c += c
     #csvファイルにコンディションを追記
-    with open('CSV/oomori/oomori_' + str(i-6) + '.csv', 'a', newline='') as f:
+    with open('CSV/tama/tama_' + str(i-6) + '.csv', 'a', newline='') as f:
       print(write_c, file=f)
     
     #csvファイルから読み込み
-    with open('CSV/oomori/oomori_' + str(i-6) + '.csv', 'r', newline='') as f:
+    with open('CSV/tama/tama_' + str(i-6) + '.csv', 'r', newline='') as f:
       reader = csv.reader(f)
       conditionList = []
       for row in reader:
@@ -100,5 +100,5 @@ def oomori_checker():
   time.sleep(1)
 
 if __name__ == '__main__':
-  oomori_checker()
+  tama_checker()
 

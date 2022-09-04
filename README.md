@@ -1,2 +1,4 @@
 # rain_notify_new
 雨天中止確認bot
+#lineToken
+G4JwRdZdmnodYGy65ZWB51E1O5yo8CREmS5MKNvKqsR
