@@ -6,8 +6,10 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 import time
 import csv
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from checker.notify.notify import rain_notify
-
 
 def haginaka_checker():
   options = ChromeOptions()
@@ -49,45 +51,45 @@ def haginaka_checker():
 
 
   rain_grounds = []  #コート不良になったグランド名
-  for i in range(7, 8):
-    #各球場のコンディション取得
-    condition = conditions[i].find_all('td', class_='NATR')
-    #各時間帯のコンディション取得
-    write_c = ''
-    for j in range(len(condition)):
-      #改行コードと空白を削除
-      c = condition[j].get_text().replace('\n', '')
-      c = c.replace('\t', '')
-      c = c.replace(' ', '')
-      c = c.strip()
-      if j == 1:
-        write_c += c + '\t'
-      else:
-        write_c += c
-    #csvファイルにコンディションを追記
-    with open('CSV/haginaka/haginaka.csv', 'a', newline='') as f:
-      print(write_c, file=f)
-    
-    #csvファイルから読み込み
-    with open('CSV/haginaka/haginaka.csv', 'r', newline='') as f:
-      reader = csv.reader(f)
-      conditionList = []
-      for row in reader:
-        conditionList.append(row)
-        
-      courtFlag = False
-      if len(conditionList) == 1:
-        if 'コート不良' in conditionList[-1][0] or '雨天中止' in conditionList[-1][0]:
-          courtFlag = True
-        
-      else:
-        if conditionList[-1] != conditionList[-2] and ('コート不良' in conditionList[-1][0] or '雨天中止' in conditionList[-1][0]):
-          courtFlag = True
 
-      if courtFlag:
-        court = conditionList[-1][0].split('\t')[0]
-        #print(court, 'はコート不良です。')
-        rain_grounds.append(court)
+  #各球場のコンディション取得
+  condition = conditions[-1].find_all('td', class_='NATR')
+  #各時間帯のコンディション取得
+  write_c = ''
+  for j in range(len(condition)):
+    #改行コードと空白を削除
+    c = condition[j].get_text().replace('\n', '')
+    c = c.replace('\t', '')
+    c = c.replace(' ', '')
+    c = c.strip()
+    if j == 1:
+      write_c += c + '\t'
+    else:
+      write_c += c
+  #csvファイルにコンディションを追記
+  with open('CSV/haginaka/haginaka.csv', 'a', newline='') as f:
+    print(write_c, file=f)
+  
+  #csvファイルから読み込み
+  with open('CSV/haginaka/haginaka.csv', 'r', newline='') as f:
+    reader = csv.reader(f)
+    conditionList = []
+    for row in reader:
+      conditionList.append(row)
+      
+    courtFlag = False
+    if len(conditionList) == 1:
+      if 'コート不良' in conditionList[-1][0] or '雨天中止' in conditionList[-1][0]:
+        courtFlag = True
+      
+    else:
+      if conditionList[-1] != conditionList[-2] and ('コート不良' in conditionList[-1][0] or '雨天中止' in conditionList[-1][0]):
+        courtFlag = True
+
+    if courtFlag:
+      court = conditionList[-1][0].split('\t')[0]
+      #print(court, 'はコート不良です。')
+      rain_grounds.append(court)
         
   if courtFlag:
     rain_notify(rain_grounds)

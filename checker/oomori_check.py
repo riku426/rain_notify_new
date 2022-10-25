@@ -6,8 +6,10 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 import time
 import csv
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from checker.notify.notify import rain_notify
-
 
 def oomori_checker():
   options = ChromeOptions()
@@ -49,9 +51,9 @@ def oomori_checker():
 
 
   rain_grounds = []  #コート不良になったグランド名
-  for i in range(7, 11):
+  for i in range(4):
     #各球場のコンディション取得
-    condition = conditions[i].find_all('td', class_='NATR')
+    condition = conditions[len(conditions)-i-1].find_all('td', class_='NATR')
     #各時間帯のコンディション取得
     write_c = ''
     for j in range(len(condition)):
@@ -65,11 +67,11 @@ def oomori_checker():
       else:
         write_c += c
     #csvファイルにコンディションを追記
-    with open('CSV/oomori/oomori_' + str(i-6) + '.csv', 'a', newline='') as f:
+    with open('CSV/oomori/oomori_' + str(i+1) + '.csv', 'a', newline='') as f:
       print(write_c, file=f)
     
     #csvファイルから読み込み
-    with open('CSV/oomori/oomori_' + str(i-6) + '.csv', 'r', newline='') as f:
+    with open('CSV/oomori/oomori_' + str(i+1) + '.csv', 'r', newline='') as f:
       reader = csv.reader(f)
       conditionList = []
       for row in reader:
