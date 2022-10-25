@@ -1,8 +1,3 @@
-from checker.oomori_check import oomori_checker
-from checker.oota_check import oota_checker
-from checker.chofu_check import chofu_checker
-from checker.haginaka_check import haginaka_checker
-from checker.tama_check import tama_checker
 import datetime
 from get_ground_condition import GetGroundCondition
 from CSV.csv_clear import csv_clear
