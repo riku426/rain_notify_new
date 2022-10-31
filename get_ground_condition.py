@@ -139,8 +139,9 @@ class GetGroundCondition:
     self.check_condition()
     if self.courtFlag:
       rain_notify(self.rain_grounds)
-    else:
-      rain_notify(['萩中'])
+    # デバック用
+    # else:
+    #   rain_notify(['萩中'])
       
     time.sleep(1)
     back = self.driver.find_elements(By.XPATH, '//a[@href]')
